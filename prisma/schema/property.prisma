@@ -1,0 +1,29 @@
+enum PropertyType{
+  APARTMENT
+  HOUSE
+  STUDIO
+  CONDO
+  ROOM
+}
+
+model Property{
+    id  String @id @default(uuid())
+    landlordId String 
+    landlord User @relation(fields: [landlordId], references: [id])
+    type PropertyType    
+    title String
+    description String
+    location String?
+    price Decimal @db.Decimal(10,2)
+    amenities String[] @default([])
+    isAvailable Boolean      @default(true)
+   createdAt   DateTime     @default(now())
+   updatedAt   DateTime     @updatedAt
+
+  rentalRequests RentalRequest[]
+
+  @@index([location])
+  @@index([type])
+  @@map("properties")
+    
+}
