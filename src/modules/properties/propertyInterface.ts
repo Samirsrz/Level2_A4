@@ -1,3 +1,4 @@
+import { PropertyWhereInput } from "../../../generated/prisma/models";
 
 export enum PropertyType {
   APARTMENT = 'APARTMENT',
@@ -21,4 +22,14 @@ export interface ICreatePropertyPayload {
   description: string;
   location?: string | null;
   amenities?: string[];
+}
+
+
+export interface IQueryProperty{
+  location?: string;
+  type?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
 }

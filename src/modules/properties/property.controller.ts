@@ -39,14 +39,21 @@ const createProperty = catchAsync(
             result
         }
     })
-
-
-
   },
 );
 
 
 
+const getAllProperty=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+    const query = req.query;
+
+    const result =  await propertyService.getAllPropertyDB(query)
+
+})
+
+
+
 export const propertyController  ={
-    createProperty
+    createProperty,
+    getAllProperty
 }
