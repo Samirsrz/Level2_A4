@@ -49,11 +49,33 @@ const getAllProperty=catchAsync(async(req:Request,res:Response,next:NextFunction
 
     const result =  await propertyService.getAllPropertyDB(query)
 
+    sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Properties fetched successfully",
+        data:result
+    })
+     
 })
 
 
+const getPropertyById = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+     const id = req.params.id;
+     if(!id){
+       throw new Error("Post ID is required in params")
+     }
+
+     const singleProperty =  await propertyService.getPropertyById_DB(id as string);
+      sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Single Property feched successfully",
+        data:singleProperty
+       })
+})
 
 export const propertyController  ={
     createProperty,
-    getAllProperty
+    getAllProperty,
+    getPropertyById
 }
