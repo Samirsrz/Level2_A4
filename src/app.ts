@@ -4,6 +4,7 @@ import cors from "cors"
 import config from "./config";
 import { userRoutes } from "./modules/users/users.route";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { propertyRoutes } from "./modules/properties/property.route";
 
 const app:Application = express()
 
@@ -27,6 +28,6 @@ app.use("/api/users",userRoutes)
 
 app.use("/api/auth",authRoutes)
 
-
+app.use("/api/landlord",propertyRoutes)
 
 export default app;
