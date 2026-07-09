@@ -163,7 +163,42 @@ return result
 }
 
 
+const deletePropertyDB =async(id:string,landlordId:string)=>{
 
+    const property = await prisma.property.findUnique({
+      where:{
+        id
+      }
+     })
+      if (!property) {
+        throw new Error("Property not found");
+      }
+      
+     if(property.landlordId!==landlordId){
+      throw new Error("You cannot delete someone else's property")
+     }
+
+     const rentalRequestsCount = await prisma.rentalRequest.count({
+      where:{
+        propertyId:id
+      }
+     })
+
+     if(rentalRequestsCount>0){
+       throw new Error("Cannot delete a property with existing rental request history");
+     }
+
+  
+     const result = await prisma.property.delete({
+      where:{
+        id
+      }
+     })
+ 
+      return result
+
+}
+ 
 
 
 
@@ -172,5 +207,6 @@ export const propertyService = {
     createPropertyDB,
     getAllPropertyDB,
     getPropertyById_DB,
-    updatePropertyDB
+    updatePropertyDB,
+    deletePropertyDB
 }

@@ -4,6 +4,7 @@ import { ALLOWED_PROPERTY_TYPES } from "./propertyInterface";
 import { propertyService } from "./property.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status"
+import { PropertyType } from "../../../generated/prisma/enums";
 
 
 
@@ -85,7 +86,7 @@ const updateProperty=catchAsync(async(req:Request,res:Response,next:NextFunction
     const payload  = req.body
    
     if(!id){
-       throw new Error("Post ID is required in params")
+       throw new Error("Property ID is required in params")
      }
 
 
@@ -103,13 +104,37 @@ const updateProperty=catchAsync(async(req:Request,res:Response,next:NextFunction
 })
 
 
+const deleteProperty=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+
+    const id = req.params.id;
+
+    const landlordId = req.user?.id;
+
+     if(!id){
+       throw new Error("Property does not exist")
+     }
+
+     const result = await propertyService.deletePropertyDB(id as string,landlordId as string)
+
+     sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Property deleted successfully",
+        data:result
+       })
+
+})
 
 
 
 
-export const propertyController  ={
+
+
+export const propertyController={
     createProperty,
     getAllProperty,
     getPropertyById,
-    updateProperty
+    updateProperty,
+    deleteProperty,
+   
 }
