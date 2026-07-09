@@ -24,6 +24,15 @@ export interface ICreatePropertyPayload {
   amenities?: string[];
 }
 
+export interface IUpdatePropertyPayload {
+  type?: PropertyType;
+  price?: number;
+  title?: string;
+  description?: string;
+  location?: string | null;
+  amenities?: string[];
+}
+
 
 export interface IQueryProperty{
   location?: string;

@@ -1,6 +1,6 @@
 import { Prisma } from "../../../generated/prisma/client"
 import { prisma } from "../../lib/prisma"
-import { ICreatePropertyPayload, IQueryProperty } from "./propertyInterface"
+import { ICreatePropertyPayload, IQueryProperty, IUpdatePropertyPayload } from "./propertyInterface"
 
 
 const createPropertyDB =async(landlordId:string,payload:ICreatePropertyPayload)=>{
@@ -120,8 +120,57 @@ const getPropertyById_DB = async (id: string) => {
   return property;
 };
 
+
+
+
+const updatePropertyDB =async(id:string, payload:IUpdatePropertyPayload, landlordId:string,isLandlord:boolean)=>{
+ 
+    const property = await prisma.property.findUnique({
+      where:{
+        id
+      }
+     })
+      if (!property) {
+        throw new Error("Property not found");
+      }
+      
+     if(property.landlordId!==landlordId){
+      throw new Error("You cannot update someone else's property")
+     }
+
+    const result = await prisma.property.update({
+      where:{
+           id
+      },
+      data:{
+        ...payload,
+      },
+            include: {
+      landlord: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role:true
+        }
+      }
+        }
+      
+    })
+
+return result
+
+}
+
+
+
+
+
+
+
 export const propertyService = {
     createPropertyDB,
     getAllPropertyDB,
-    getPropertyById_DB
+    getPropertyById_DB,
+    updatePropertyDB
 }

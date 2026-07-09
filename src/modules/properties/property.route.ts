@@ -10,8 +10,9 @@ router.post("/properties",auth("LANDLORD"), propertyController.createProperty)
 
 router.get("/properties",propertyController.getAllProperty)
 
-
 router.get("/properties/:id",propertyController.getPropertyById)
+
+router.put("/properties/:id",auth("LANDLORD"),propertyController.updateProperty)
 
 
 export const propertyRoutes = router

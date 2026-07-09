@@ -74,8 +74,42 @@ const getPropertyById = catchAsync(async(req:Request,res:Response,next:NextFunct
        })
 })
 
+
+
+const updateProperty=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+   const id = req.params.id;
+
+    const landlordId = req.user?.id;
+
+    const isLandlord = req.user?.role==="LANDLORD"
+    const payload  = req.body
+   
+    if(!id){
+       throw new Error("Post ID is required in params")
+     }
+
+
+      const result = await propertyService.updatePropertyDB(id as string, payload, landlordId as string, isLandlord )
+
+    sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Property updated successfully",
+        data:result
+       })
+
+
+
+})
+
+
+
+
+
+
 export const propertyController  ={
     createProperty,
     getAllProperty,
-    getPropertyById
+    getPropertyById,
+    updateProperty
 }
