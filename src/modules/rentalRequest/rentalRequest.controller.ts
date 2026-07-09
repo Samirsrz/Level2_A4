@@ -29,6 +29,62 @@ const createRentalRequest=catchAsync(async(req:Request,res:Response,next:NextFun
 })
 
 
+
+const getMyrentalRequest=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+    const currentUserID = req.user?.id
+    
+    const result = await rentalService.getMyrentalRequestDB(currentUserID as string)
+ 
+     if(!result || result.length===0){
+        sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"You have not request yet",
+        data:{
+            result
+        }
+    })
+     }
+
+    sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Your Rental Request are here",
+        data:{
+            result
+        }
+    })
+})
+
+
+
+const getRentalRequestById = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+
+    const rentalId = req.params.id
+ 
+      const currentUserID = req.user?.id
+
+       const result = await rentalService.getRentalRequestById_DB(rentalId as string,currentUserID as string)   
+    
+ 
+        sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Rental history of this property",
+        data:{
+            result
+        }
+    })
+
+
+})
+
+
+
+
+
 export const rentalController = {
-    createRentalRequest
+    createRentalRequest,
+    getMyrentalRequest,
+    getRentalRequestById
 }
