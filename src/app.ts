@@ -7,6 +7,7 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { propertyRoutes } from "./modules/properties/property.route";
 import { categoriesRoutes } from "./modules/property_categories/categories.routes";
 import { rentalRoutes } from "./modules/rentalRequest/rentalRequest.route";
+import { reviewRoutes } from "./modules/reviews/reviews.routes";
 
 const app:Application = express()
 
@@ -38,6 +39,6 @@ app.use("/api",categoriesRoutes)
 app.use("/api",rentalRoutes)
 
 
-
+app.use("/api/reviews",reviewRoutes)
 
 export default app;
