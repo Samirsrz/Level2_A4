@@ -76,17 +76,6 @@ const getAllPropertyDB = async (query: IQueryProperty) => {
 };
 
 
-
-
-// const getPropertyById_DB =  async(id:string)=>{
-   
-//    const transactionResult = await prisma.$transaction(
-//     async(tx)=>{
-//         await tx.property.
-//     }
-//    )
-// }
-
 const getPropertyById_DB = async (id: string) => {
   const property = await prisma.property.findUnique({
     where: {
@@ -201,6 +190,36 @@ const deletePropertyDB =async(id:string,landlordId:string)=>{
  
 
 
+const getMyPropertiesDB = async(landlordId:string)=>{
+  const result = await prisma.property.findMany({
+    where:{
+      landlordId
+    },
+    include:{
+      rentalRequests:{
+        include:{
+          tenant:{
+            select:{
+              id:true,
+              name:true,
+              email:true,
+            }
+          }
+        },
+        orderBy:{
+          createdAt:"desc"
+        }
+
+      }
+    }
+  })
+  return result
+}
+
+
+
+
+
 
 
 export const propertyService = {
@@ -208,5 +227,6 @@ export const propertyService = {
     getAllPropertyDB,
     getPropertyById_DB,
     updatePropertyDB,
-    deletePropertyDB
+    deletePropertyDB,
+    getMyPropertiesDB
 }

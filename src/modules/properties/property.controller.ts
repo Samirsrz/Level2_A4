@@ -129,6 +129,33 @@ const deleteProperty=catchAsync(async(req:Request,res:Response,next:NextFunction
 
 
 
+const getMyProperties=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+    const landlordId = req.user?.id;
+
+    const result = await propertyService.getMyPropertiesDB(landlordId as string)
+
+   
+     if(!result){
+        sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"You have no properties to be listed",
+        data:result
+       })
+     }
+
+     sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Properties listed successfully",
+        data:result
+       })
+})
+
+
+
+
+
 
 export const propertyController={
     createProperty,
@@ -136,5 +163,6 @@ export const propertyController={
     getPropertyById,
     updateProperty,
     deleteProperty,
+    getMyProperties
    
 }

@@ -35,7 +35,7 @@ app.use("/api/landlord",propertyRoutes)
 app.use("/api",categoriesRoutes)
 
 
-app.use("/api/rentals",rentalRoutes)
+app.use("/api",rentalRoutes)
 
 
 

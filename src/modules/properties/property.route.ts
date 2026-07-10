@@ -17,4 +17,10 @@ router.put("/properties/:id",auth("LANDLORD"),propertyController.updateProperty)
 router.delete("/properties/:id",auth("LANDLORD"),propertyController.deleteProperty)
 
 
+
+
+router.get("/myproperties",propertyController.getMyProperties)
+
+
+
 export const propertyRoutes = router
