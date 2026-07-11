@@ -1,0 +1,24 @@
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentMethod {
+  STRIPE
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  transactionId   String        @unique
+  rentalRequestId String
+  rentalRequest   RentalRequest @relation(fields: [rentalRequestId], references: [id])
+  amount          Decimal       @db.Decimal(10, 2)
+  method          PaymentMethod @default(STRIPE)
+  status          PaymentStatus @default(PENDING)
+  paidAt          DateTime?
+  createdAt       DateTime      @default(now())
+
+  @@index([rentalRequestId])
+  @@map("payments")
+}

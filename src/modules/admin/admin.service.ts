@@ -48,8 +48,25 @@ const getAllPropertiesDB = async () => {
 
 
 
+const getAllRentalsDB = async () => {
+  const result = await prisma.rentalRequest.findMany({
+    include: {
+      tenant: {
+        select: { id: true, name: true, email: true },
+      },
+      property: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return result;
+};
+
+
+
 export const adminService={
     getAllUsersDB,
     updateUserStatusDB,
-    getAllPropertiesDB
+    getAllPropertiesDB,
+    getAllRentalsDB
 }

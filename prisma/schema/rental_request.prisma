@@ -10,7 +10,7 @@ model RentalRequest{
     updatedAt DateTime @updatedAt
    
     endTime DateTime
-
+    payments Payment[]
     review Review?
 
 

@@ -9,40 +9,30 @@ import { categoriesRoutes } from "./modules/property_categories/categories.route
 import { rentalRoutes } from "./modules/rentalRequest/rentalRequest.route";
 import { reviewRoutes } from "./modules/reviews/reviews.routes";
 import { adminRoutes } from "./modules/admin/admin.routes";
+import { paymentRoutes } from "./modules/payment/payment.route";
 
-const app:Application = express()
-
+const app: Application = express()
 
 app.use(cors({
-    origin: config.app_url,
-    credentials:true
+  origin: config.app_url,
+  credentials: true
 }))
+
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-
-app.get("/",(req:Request,res:Response)=>{
-     res.send("Hello world")
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello world")
 })
 
-
-app.use("/api/users",userRoutes)
-
-
-app.use("/api/auth",authRoutes)
-
-app.use("/api/landlord",propertyRoutes)
-
-app.use("/api",categoriesRoutes)
-
-
-app.use("/api",rentalRoutes)
-
-
-app.use("/api/reviews",reviewRoutes)
-
-
-app.use('/api/admin',adminRoutes)
+app.use('/api/payments', paymentRoutes)
+app.use("/api/users", userRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/landlord", propertyRoutes)
+app.use("/api", categoriesRoutes)
+app.use("/api", rentalRoutes)
+app.use("/api/reviews", reviewRoutes)
+app.use('/api/admin', adminRoutes)
 
 export default app;
