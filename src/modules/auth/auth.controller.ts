@@ -46,7 +46,7 @@ const loginUser = catchAsync(
 );
 
 
-
+// To get current user
 const getCurrentUser = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
     sendResponse(res,{
     success: true,
