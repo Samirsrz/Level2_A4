@@ -4,7 +4,7 @@ import { adminController } from "./admin.controller";
 
 const router = Router()
 
-
+// const routers = Ruter()::.
 
 router.get("/users", auth("ADMIN"), adminController.getAllUsers);
 router.get("/properties", auth("ADMIN"), adminController.getAllProperties);
