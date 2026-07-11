@@ -64,9 +64,31 @@ const getAllRentalsDB = async () => {
 
 
 
+
+const getAllPaymentsDB = async () => {
+  const result = await prisma.payment.findMany({
+    include: {
+      rentalRequest: {
+        include: {
+          tenant: { select: { id: true, name: true, email: true } },
+          property: {
+            include: {
+              landlord: { select: { id: true, name: true, email: true } },
+            },
+          },
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return result;
+};
+
 export const adminService={
     getAllUsersDB,
     updateUserStatusDB,
     getAllPropertiesDB,
-    getAllRentalsDB
+    getAllRentalsDB,
+    getAllPaymentsDB
 }

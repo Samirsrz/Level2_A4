@@ -104,9 +104,45 @@ const confirmPaymentDB = async (transactionId: string) => {
 };
 
 
+const getMyPaymentsDB = async (tenantId: string) => {
+  const result = await prisma.payment.findMany({
+    where: { 
+        rentalRequest: { tenantId } 
+    },
+    include: { 
+        rentalRequest: { 
+            include: 
+            { 
+                property: true 
+            } 
+        } 
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return result;
+};
 
+const getPaymentByIdDB = async (paymentId: string, userId: string) => {
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+    include: { rentalRequest: { include: { property: true } } },
+  });
+
+  if (!payment) throw new Error("Payment not found");
+
+  const isTenant = payment.rentalRequest.tenantId === userId;
+  const isLandlord = payment.rentalRequest.property.landlordId === userId;
+
+  if (!isTenant && !isLandlord) {
+    throw new Error("Not authorized to view this payment");
+  }
+
+  return payment;
+};
 
 export const paymentService = {
     createPaymentDB,
-    confirmPaymentDB
+    confirmPaymentDB,
+    getMyPaymentsDB,
+    getPaymentByIdDB
 }
