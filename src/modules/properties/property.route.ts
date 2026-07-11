@@ -19,7 +19,7 @@ router.delete("/properties/:id",auth("LANDLORD"),propertyController.deleteProper
 
 
 
-router.get("/myproperties",propertyController.getMyProperties)
+router.get("/myproperties", auth("LANDLORD"), propertyController.getMyProperties)
 
 
 
