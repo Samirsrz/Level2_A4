@@ -16,6 +16,35 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
 });
 
 
+
+const updateUserStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const userId = req.params.id;
+  const { status } = req.body;
+
+  const result = await adminService.updateUserStatusDB(userId as string, status);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User status updated successfully",
+    data: result,
+  });
+});
+
+
+const getAllProperties = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const result = await adminService.getAllPropertiesDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "All properties retrieved successfully",
+    data: result,
+  });
+});
+
 export const adminController = {
-    getAllUsers
+    getAllUsers,
+    updateUserStatus,
+    getAllProperties
 }

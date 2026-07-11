@@ -32,6 +32,24 @@ const updateUserStatusDB = async (userId: string, status: "ACTIVE" | "BANNED") =
 };
 
 
+
+const getAllPropertiesDB = async () => {
+  const result = await prisma.property.findMany({
+    include: {
+      landlord: {
+        select: { id: true, name: true, email: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return result;
+};
+
+
+
 export const adminService={
-    getAllUsersDB
+    getAllUsersDB,
+    updateUserStatusDB,
+    getAllPropertiesDB
 }
