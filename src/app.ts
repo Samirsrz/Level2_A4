@@ -15,8 +15,13 @@ import { globalErrorHandler } from "./middleware/globalErrorHandler";
 
 const app: Application = express()
 
+// app.use(cors({
+//   origin: config.app_url,
+//   credentials: true
+// }))
+
 app.use(cors({
-  origin: config.app_url,
+  origin: [config.frontend_url, "http://localhost:3000"],
   credentials: true
 }))
 
