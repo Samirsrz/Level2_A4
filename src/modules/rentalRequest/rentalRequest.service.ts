@@ -58,7 +58,14 @@ const getRentalRequestById_DB= async(rentalId:string,currentUserId:string)=>{
             id:rentalId
          },
          include:{
-            property:true
+            property:true,
+              tenant: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        }
+      }
          }
        })
 

@@ -63,10 +63,20 @@ const getPaymentById = catchAsync(async (req: Request, res: Response, next: Next
 });
 
 
+const getLandlordEarnings = catchAsync(async (req, res) => {
+  const result = await paymentService.getLandlordEarningsDB(req.user!.id)
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Earnings fetched successfully",
+    data: result,
+  })
+})
 
 export const paymentController = {
     createPayment,
     confirmPayment,
     getMyPayments,
-    getPaymentById
+    getPaymentById,
+    getLandlordEarnings
 }

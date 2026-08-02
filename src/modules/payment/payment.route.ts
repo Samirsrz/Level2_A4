@@ -18,4 +18,6 @@ router.get("/", auth("TENANT"), paymentController.getMyPayments);
 router.get("/:id", auth("TENANT", "LANDLORD"), paymentController.getPaymentById);
 
 
+router.get("/landlord/earnings", auth("LANDLORD"), paymentController.getLandlordEarnings)
+
 export const paymentRoutes = router

@@ -47,9 +47,10 @@ const session = await stripe.checkout.sessions.create({
             quantity:1,
         }
     ],
-    success_url: `${config.app_url}/api/payments/success`,
-    cancel_url: `${config.app_url}/api/payments/cancel`,
-
+    // success_url: `${config.app_url}/api/payments/success`,
+    // cancel_url: `${config.app_url}/api/payments/cancel`,
+    success_url: `${config.frontend_url}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${config.frontend_url}/payment/cancel`,
 })
 
 
@@ -139,10 +140,45 @@ const getPaymentByIdDB = async (paymentId: string, userId: string) => {
 
   return payment;
 };
+const getLandlordEarningsDB = async (landlordId: string) => {
+  const payments = await prisma.payment.findMany({
+    where: {
+      status: "COMPLETED",
+      rentalRequest: {
+        property: {
+          landlordId,
+        },
+      },
+    },
+    include: {
+      rentalRequest: {
+        include: {
+          property: {
+            select: {
+              title: true,
+            },
+          },
+          tenant: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      paidAt: "desc",
+    },
+  })
 
+  const totalEarnings = payments.reduce((sum, p) => sum + Number(p.amount), 0)
+
+  return { totalEarnings, paymentCount: payments.length, payments }
+}
 export const paymentService = {
     createPaymentDB,
     confirmPaymentDB,
     getMyPaymentsDB,
-    getPaymentByIdDB
+    getPaymentByIdDB,
+    getLandlordEarningsDB
 }

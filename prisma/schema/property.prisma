@@ -16,6 +16,7 @@ model Property{
     location String?
     price Decimal @db.Decimal(10,2)
     amenities String[] @default([])
+    images String[] @default([])
     isAvailable Boolean      @default(true)
    createdAt   DateTime     @default(now())
    updatedAt   DateTime     @updatedAt
