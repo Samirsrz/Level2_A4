@@ -60,9 +60,54 @@ const getCurrentUser = catchAsync(async(req:Request,res:Response,next:NextFuncti
 
 
 
+const googleLogin = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+  
+  const {idToken} = req.body;
+  const {user, refreshToken,accessToken} = await authService.googleLoginDB(idToken);
+
+  const {email,role,name} = user;
+
+const isProd = process.env.NODE_ENV === "production"
+
+res.cookie("accessToken", accessToken, {
+  httpOnly: true,
+  secure: isProd,
+  path:"/",
+  sameSite: isProd ? "none" : "lax",
+  maxAge: 1000 * 60 * 60 * 24,
+});
+
+res.cookie("refreshToken", refreshToken, {
+  httpOnly: true,
+  secure: isProd,
+  path:"/",
+  sameSite: isProd ? "none" : "lax",
+  maxAge: 1000 * 60 * 60 * 24 * 7,
+});
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Logged in with Google successfully",
+      data: {
+        user: {
+          name,
+          email,
+          role,
+        },
+        refreshToken,
+        accessToken,
+      },
+    });
+
+  
+   
+})
+
 
 
 export const authController ={
     loginUser,
-    getCurrentUser
+    getCurrentUser,
+    googleLogin
 }

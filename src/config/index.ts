@@ -15,4 +15,5 @@ export default{
     stripe_secret_key:process.env.STRIPE_SECRET_KEY!,
     stripe_price_id:process.env.STRIPE_PRICE_ID!,
     frontend_url: process.env.FRONTEND_URL!,
+    google_client_id:process.env.GOOGLE_CLIENT_ID
 }
